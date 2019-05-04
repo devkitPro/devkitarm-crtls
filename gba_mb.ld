@@ -82,8 +82,8 @@ SECTIONS
 
 	.text  ALIGN (4):
 	{
-		*(EXCLUDE_FILE (*.iwram*) .text)
-		*(.text .stub .text.* .gnu.linkonce.t.*)
+		*(EXCLUDE_FILE (*.iwram*) .text*)
+		*(.gnu.linkonce.t.*)
 		KEEP (*(.text.*personality*))
 		/* .gnu.warning sections are handled specially by elf32.em.  */
 		*(.gnu.warning)
@@ -170,7 +170,7 @@ SECTIONS
 	{
 		__iwram_start__ = ABSOLUTE(.) ;
 		*(.iwram)
-		*iwram.*(.text)
+		*iwram.*(.text*)
 		. = ALIGN(4);   /* REQUIRED. LD is flaky without it. */
 		__iwram_end__ = ABSOLUTE(.) ;
 	} >iwram = 0xff
