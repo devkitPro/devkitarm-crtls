@@ -55,7 +55,7 @@ startup:
 
 	@ Jump to user code
 	ldr r3, =main
-	ldr lr, =__ctru_exit
+	ldr lr, =exit
 	bx  r3
 
 @---------------------------------------------------------------------------------
