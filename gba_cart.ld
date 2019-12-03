@@ -160,8 +160,8 @@ SECTIONS
 	.iwram __iwram_start : AT (__iwram_lma)
 	{
 		__iwram_start__ = ABSOLUTE(.) ;
-		*(.iwram)
-		*iwram.*(.text*)
+		*(.iwram .iwram*)
+		*iwram.*(.text* .data*)
 		. = ALIGN(4);   /* REQUIRED. LD is flaky without it. */
 		__iwram_end__ = ABSOLUTE(.) ;
 	} >iwram = 0xff
@@ -184,8 +184,7 @@ SECTIONS
 	.data ALIGN(4) : AT (__data_lma)
 	{
 		__data_start__ = ABSOLUTE(.);
-		*(.data)
-		*(.data.*)
+		*(.data*)
 		*(.gnu.linkonce.d*)
 		CONSTRUCTORS
 		. = ALIGN(4);
@@ -250,7 +249,7 @@ SECTIONS
 	__ewram_start = ORIGIN(ewram);
 	.ewram __ewram_start : AT (__ewram_lma)
 	{
-		*(.ewram)
+		*(.ewram*)
 		. = ALIGN(4);  /* REQUIRED. LD is flaky without it. */
 		__ewram_end = ABSOLUTE(.);
 	}>ewram = 0xff
@@ -260,7 +259,7 @@ SECTIONS
 	.sbss ALIGN(4)(NOLOAD):
  	{
 		__sbss_start__ = ABSOLUTE(.);
- 		*(.sbss)
+ 		*(.sbss*)
  		. = ALIGN(4);
 		__sbss_end__  = ABSOLUTE(.);
 		__end__ = ABSOLUTE(.);
