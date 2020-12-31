@@ -58,7 +58,11 @@ __slave_number:
 start_vector:
 @---------------------------------------------------------------------------------
 	mov	r0, #0x4000000			@ REG_BASE
-	str	r0, [r0, #0x208]
+	str	r0, [r0, #0x208]!		@ Clear IME. Disable IRQs
+
+	ldr	r1, [r0, #0x204]
+	orr	r1, #0x4000			@ Enable prefetch
+	str	r1, [r0, #0x204]		@ Write WAITCNT register
 
 	mov	r0, #0x12			@ Switch to IRQ Mode
 	msr	cpsr, r0
