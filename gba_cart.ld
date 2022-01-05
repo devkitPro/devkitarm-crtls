@@ -12,15 +12,15 @@
 /*         support added to allow labels end, _end, */
 /*         & __end__ to point to end of iwram or    */
 /*         the end of ewram.                        */
-/*	Additions by WinterMute				            */
-/* v1.4 -	.sbss section added for unitialised	    */
-/*		    data in ewram 			                */
-/* v1.5 -	padding section added to stop EZF 	    */
-/*		    stripping important data		        */
+/*	Additions by WinterMute				*/
+/* v1.4 -	.sbss section added for unitialised	*/
+/*		    data in ewram 			*/
+/* v1.5 -	padding section added to stop EZF 	*/
+/*		    stripping important data		*/
 
 /* This file is released into the public domain		*/
 /* for commercial or non-commercial use with no		*/
-/* restrictions placed upon it.				        */
+/* restrictions placed upon it.				*/
 
 /* NOTE!!!: This linker script defines the RAM &  */
 /*   ROM start addresses. In order for it to work */
@@ -28,12 +28,12 @@
 /*   options from your makefile if they are       */
 /*   present.                                     */
 
-/* You can use the following to view section       */
-/* addresses in your .elf file:                    */
-/*   objdump -h file.elf                           */
-/* Please note that empty sections may incorrectly */
-/* list the lma address as the vma address for     */
-/* some versions of objdump.                       */
+/* You can use the following to view section      */
+/* addresses in your .elf file:                   */
+/*   objdump -h file.elf                          */
+/* Please note that empty sections may incorrectly*/
+/* list the lma address as the vma address for    */
+/* some versions of objdump.                      */
 
 OUTPUT_FORMAT("elf32-littlearm", "elf32-bigarm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
@@ -161,7 +161,7 @@ SECTIONS
 	{
 		__iwram_start__ = ABSOLUTE(.) ;
 		*(.iwram)
-		*iwram.*(.text*)
+		*iwram.*(.text* .data*)
 		. = ALIGN(4);   /* REQUIRED. LD is flaky without it. */
 		__iwram_end__ = ABSOLUTE(.) ;
 	} >iwram = 0xff
@@ -184,8 +184,7 @@ SECTIONS
 	.data ALIGN(4) : AT (__data_lma)
 	{
 		__data_start__ = ABSOLUTE(.);
-		*(.data)
-		*(.data.*)
+		*(.data*)
 		*(.gnu.linkonce.d*)
 		CONSTRUCTORS
 		. = ALIGN(4);
@@ -252,9 +251,7 @@ SECTIONS
 	__ewram_start = ORIGIN(ewram);
 	.ewram __ewram_start : AT (__ewram_lma)
 	{
-		*(.ewram)
-		*(.ewram.*)
-		*ewram.*(.text.*)
+		*(.ewram*)
 		. = ALIGN(4);  /* REQUIRED. LD is flaky without it. */
 		__ewram_end = ABSOLUTE(.);
 	}>ewram = 0xff
@@ -264,8 +261,7 @@ SECTIONS
 	.sbss ALIGN(4)(NOLOAD):
  	{
 		__sbss_start__ = ABSOLUTE(.);
- 		*(.sbss)
-		*(.sbss.*)
+ 		*(.sbss*)
  		. = ALIGN(4);
 		__sbss_end__  = ABSOLUTE(.);
 		__end__ = ABSOLUTE(.);
