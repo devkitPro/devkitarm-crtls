@@ -56,6 +56,9 @@ SECTIONS
 		*(.gnu.linkonce.r*)
 		SORT(CONSTRUCTORS)
 		. = ALIGN(4);
+		__tdata_align = .;
+		LONG (MAX(8, ALIGNOF(.tdata)));
+		. = ALIGN(4);
 	} : rodata
 
 	.ARM.extab : { *(.ARM.extab* .gnu.linkonce.armextab.*) } : rodata
@@ -76,7 +79,7 @@ SECTIONS
 		. = ALIGN(4);
 	} : data
 
-	.tdata ALIGN(4) :
+	.tdata ALIGN(MAX(8, ALIGNOF(.tdata))) :
 	{
 		__tdata_lma = .;
 		*(.tdata)
@@ -142,9 +145,9 @@ SECTIONS
 		*(.bss.*)
 		*(.gnu.linkonce.b*)
 		*(COMMON)
-		. = ALIGN(4);
 
 		/* Reserve space for the TLS segment of the main thread */
+		. = ALIGN(MAX(8, ALIGNOF(.tdata)));
 		__tls_start = .;
 		. += + SIZEOF(.tdata) + SIZEOF(.tbss);
 		__tls_end = .;
