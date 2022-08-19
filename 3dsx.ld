@@ -57,7 +57,7 @@ SECTIONS
 		SORT(CONSTRUCTORS)
 		. = ALIGN(4);
 		__tdata_align = .;
-		LONG (MAX(8, ALIGNOF(.tdata)));
+		LONG (ALIGNOF(.tdata));
 		. = ALIGN(4);
 	} : rodata
 
@@ -79,7 +79,7 @@ SECTIONS
 		. = ALIGN(4);
 	} : data
 
-	.tdata ALIGN(MAX(8, ALIGNOF(.tdata))) :
+	.tdata ALIGN(4) :
 	{
 		__tdata_lma = .;
 		*(.tdata)
@@ -146,10 +146,15 @@ SECTIONS
 		*(.gnu.linkonce.b*)
 		*(COMMON)
 
-		/* Reserve space for the TLS segment of the main thread */
-		. = ALIGN(MAX(8, ALIGNOF(.tdata)));
+		/* Reserve space for the TLS segment of the main thread.
+		   We need (__tls_start - 8) to be aligned the same as .tdata, to account for
+		   the 8-byte ARM TLS header. Since the header is not actually used for
+		   ARM_TLS_LE32 relocation, we just fake it by subtracting 8 from the data
+		   offset.
+		 */
+		. = 8 + ABSOLUTE(ALIGN(ABSOLUTE(. - 8), MAX(4, ALIGNOF(.tdata))));
 		__tls_start = .;
-		. += + SIZEOF(.tdata) + SIZEOF(.tbss);
+		. += SIZEOF(.tdata) + SIZEOF(.tbss);
 		__tls_end = .;
 	} : data
 	__bss_end__ = .;
