@@ -2,7 +2,7 @@
 %rename endfile		old_endfile
 
 *link:
--T gba_er.ld%s %(old_link) --gc-sections
+-T gba_er.ld%s %(old_link) --gc-sections --no-warn-rwx-segments
 
 *startfile:
 er_crt0%O%s
