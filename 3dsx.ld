@@ -79,7 +79,7 @@ SECTIONS
 		. = ALIGN(4);
 	} : data
 
-	.tdata ALIGN(4) :
+	.tdata : ALIGN(4)
 	{
 		__tdata_lma = .;
 		*(.tdata)
@@ -89,7 +89,7 @@ SECTIONS
 		__tdata_lma_end = .;
 	} : data
 
-	.tbss ALIGN(4) :
+	.tbss : ALIGN(4)
 	{
 		*(.tbss)
 		*(.tbss.*)
@@ -97,6 +97,13 @@ SECTIONS
 		*(.tcommon)
 		. = ALIGN(4);
 	} : data
+
+	/*
+    __tdata_align_val = ABSOLUTE(ALIGNOF(.tdata));
+    __tdata_size = ABSOLUTE(SIZEOF(.tdata));
+    __tbss_align = ABSOLUTE(ALIGNOF(.tbss));
+    __tbss_size = ABSOLUTE(SIZEOF(.tbss));
+	*/
 
 	.preinit_array ALIGN(4) :
 	{
@@ -152,9 +159,15 @@ SECTIONS
 		   ARM_TLS_LE32 relocation, we just fake it by subtracting 8 from the data
 		   offset.
 		 */
-		. = 8 + ABSOLUTE(ALIGN(ABSOLUTE(. - 8), MAX(4, ALIGNOF(.tdata))));
+		. = 8 + ABSOLUTE(ALIGN(ABSOLUTE(. - 8), ALIGNOF(.tdata)));
 		__tls_start = .;
-		. += SIZEOF(.tdata) + SIZEOF(.tbss);
+		. += SIZEOF(.tdata);
+
+        /* Ensure the alignment of .tbss is accounted for in the total size,
+           since SIZEOF(.tdata) doesn't include any padding before .tbss.
+         */
+        . = ALIGN(ALIGNOF(.tbss));
+        . += SIZEOF(.tbss);
 		__tls_end = .;
 	} : data
 	__bss_end__ = .;
