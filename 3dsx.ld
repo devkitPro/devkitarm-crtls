@@ -63,7 +63,7 @@ SECTIONS
 
 	.ARM.extab : { *(.ARM.extab* .gnu.linkonce.armextab.*) } : rodata
 	__exidx_start = .;
-	ARM.exidx : { *(.ARM.exidx* .gnu.linkonce.armexidx.*) } : rodata
+	.ARM.exidx : { *(.ARM.exidx* .gnu.linkonce.armexidx.*) } : rodata
 	__exidx_end = .;
 
 	/* =========== DATA section =========== */
