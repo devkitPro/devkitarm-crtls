@@ -1,6 +1,6 @@
 _MAJOR  := 1
-_MINOR  := 1
-_PATCH  := 0
+_MINOR  := 2
+_PATCH  := 4
 
 include $(DEVKITARM)/base_rules
 
