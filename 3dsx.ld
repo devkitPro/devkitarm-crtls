@@ -159,7 +159,7 @@ SECTIONS
 		   ARM_TLS_LE32 relocation, we just fake it by subtracting 8 from the data
 		   offset.
 		 */
-		. = 8 + ABSOLUTE(ALIGN(ABSOLUTE(. - 8), ALIGNOF(.tdata)));
+		. = 8 + ABSOLUTE(ALIGN(ABSOLUTE(. - 8), MAX(ALIGNOF(.tdata), ALIGNOF(.tbss))));
 		__tls_start = .;
 		. += SIZEOF(.tdata);
 
