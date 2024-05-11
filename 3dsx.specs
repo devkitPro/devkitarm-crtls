@@ -1,8 +1,7 @@
-%rename link                old_link
+%include <sync-dmb.specs>
 
 *link:
-%(old_link) -T 3dsx.ld%s -d --emit-relocs --use-blx --gc-sections
++ -T 3dsx.ld%s -d --emit-relocs --use-blx --gc-sections
 
 *startfile:
 3dsx_crt0%O%s crti%O%s crtbegin%O%s
-

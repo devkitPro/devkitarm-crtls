@@ -1,8 +1,7 @@
-%rename link                old_link
+%include <sync-none.specs>
 
 *link:
-%(old_link) -T gba_cart.ld%s --gc-sections --no-warn-rwx-segments
++ -T gba_cart.ld%s --gc-sections --no-warn-rwx-segments
 
 *startfile:
 gba_crt0%O%s crti%O%s crtbegin%O%s
-
