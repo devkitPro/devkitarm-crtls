@@ -1,7 +1,3 @@
-_MAJOR  := 1
-_MINOR  := 2
-_PATCH  := 4
-
 include $(DEVKITARM)/base_rules
 
 
@@ -43,6 +39,3 @@ thumb/%_crt0.o: %_crt0.s
 
 %_crt0.o: %_crt0.s
 	$(CC)  -x assembler-with-cpp -marm -c $< -o$@
-
-dist:
-	@tar -cJf devkitarm-crtls-$(_MAJOR).$(_MINOR).$(_PATCH).tar.xz *.specs *.ld *.mem *.s Makefile
